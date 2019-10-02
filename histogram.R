@@ -67,6 +67,9 @@ option_list<-list(
 	make_option(c("--col"),action="store",default=1,
 				dest="vCol",type="integer",
 				help="The column at which the data are held in input file, given by column number [%default]"),
+	make_option(c("--log"),action="store",default=NULL,
+				dest="logPseudo",type="double",
+				help="When provided, the given value is regarded as a pseudo count to add to the original value for logarithm transformation [%default]"),
 	make_option(c("-o","--outfile"),action="store",
 				dest="outFile",type="character",
 				help="Output filename"),
@@ -154,6 +157,10 @@ if(!is.null(outFile)) # outfile is provided
 vCol<-opt$vCol
 if(vCol > length(dat)) { stop(paste("The value for the option --col",vCol,"is out of data range:", length(dat))) }
 v<-dat[[vCol]]; vn<-names(dat)[vCol];
+if(!is.null(opt$logPseudo))
+{
+	v<-log(v+opt$logPseudo)
+}
 #print(vn); q("no");
 if(!is.null(opt$funcOpts))
 {
@@ -162,7 +169,7 @@ if(!is.null(opt$funcOpts))
 	eval(parse(text=cmd))
 }else
 {
-	hist(v, xlab=vn)
+	hist(v, xlab=vn,cex.main=0.9,cex.lab=0.8,cex.axis=0.7)
 }
 
 if(is.null(outFile))
