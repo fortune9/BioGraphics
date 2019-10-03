@@ -106,7 +106,7 @@ option_list<-list(
 				help="Output file format [determined from outfile extension]"),
 	make_option(c("--rfunc-opts"),action="store",default=NULL,
 				dest="funcOpts",type="character",
-				help="The options directly passed to the used R function, 'breaks=1:10,freq=F'"),
+				help="The options directly passed to the used R function"),
 	make_option(c("--no-stat"),action="store_true",default=FALSE,
 				dest="noStat",type="logical",
 				help="in default, a correlation test is done on the data. This option supresses this [%default]"),

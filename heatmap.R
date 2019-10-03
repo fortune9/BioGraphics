@@ -103,7 +103,7 @@ option_list<-list(
 				help="Output file format [determined from outfile extension]"),
 	make_option(c("--rfunc-opts"),action="store",default=NULL,
 				dest="funcOpts",type="character",
-				help="The options directly passed to the used R function, 'breaks=1:10,freq=F'"),
+				help="The options directly passed to the used R function"),
 	make_option(c("--simple"),action="store_true",default=FALSE,
 				dest="simple",type="logical",
 				help="if provided, the heatmap has no dendrogram, nor density, nor trace lines [%default]"),
