@@ -51,6 +51,7 @@ get_value<-function(vName, type)
 	}else
 	{
         vInd<-as.integer(vName);
+		if(is.na(vInd)) { stop("Unrecognized column '", vName,"'") }
         if(vInd > length(dat)) {stop("The ",vName," variable column number ", vInd, " is out of range of input data") }
         v<-dat[[vInd]];
 		vName<-colnames(dat)[vInd]
@@ -100,6 +101,9 @@ Example uses:
 # you need provide the full 'geom_bar()' statement
 %prog -o test.pdf --title 'My plot' --rfunc-opts 'geom_bar(mapping=aes(fill=g),data=dat,position=position_dodge2(preserve=\"single\"),stat=\"identity\")' test.tsv
 
+# you can also suppress legend title for example
+%prog -o test.pdf --title 'My plot' --rfunc-opts 'geom_bar(mapping=aes(fill=g),data=dat,position=position_dodge2(preserve=\"single\"),stat=\"identity\")+theme(legend.title=element_blank())' test.tsv
+
 Author: Zhenguo Zhang
 Contact: zhangz.sci@gmail.com
 ";
@@ -111,6 +115,9 @@ option_list<-list(
 	make_option(c("-x", "--x-var"),action="store",default=1,
 				dest="xCol",type="character",
 				help="The column name or number in the input file for the x values which mark bar positions [%default]"),
+	make_option(c("--keep-x-order"),action="store_true",default=FALSE,
+				dest="keepXOrder",type="logical",
+				help="a switch option, if provided, the bars will be ordered as input for x variable, otherwise sort alphabetically"),
 	make_option(c("-g", "--group"),action="store",default=NULL,
 				dest="gCol",type="character",
 				help="The column name or number in the input file for a group variable, which will lead to separate bars [%default]"),
@@ -125,7 +132,7 @@ option_list<-list(
 				help="Output filename"),
 	make_option(c("--out-format"),action="store",default=NULL,
 				dest="outFormat",type="character",
-				help="Output file format [determined from outfile extension]"),
+				help="Output file format, available for pdf, png, jpeg, tiff [determined from outfile extension]"),
 	make_option(c("-W","--width"),action="store",
 				dest="figWid",type="double",default=7,
 				help="The width of the figure in inches [%default]"),
@@ -138,9 +145,15 @@ option_list<-list(
 	make_option(c("--title"),action="store",
 				dest="figTitle",type="character",default=NULL,
 				help="The figure title [%default]"),
+	make_option(c("--legend-pos"),action="store",
+				dest="legendPos",type="character",default="right",
+				help="legend position, allowed values are top, bottom, left, right, and none [%default]"),
+	make_option(c("--horizontal"),action="store_true",
+				dest="horiz",type="logical",default=FALSE,
+				help="if provided, the bars will be laid horizontally"),
 	make_option(c("--rfunc-opts"),action="store",default=NULL,
 				dest="funcOpts",type="character",
-				help="The options directly passed to the used R function")
+				help="The options directly passed to the used R function. Here it is appended to constructed ggplot object")
 				  );
 
 optParser<-OptionParser(usage="usage: %prog [options] <input-file>",
@@ -163,7 +176,7 @@ opt<-opt$options
 if(length(posArgs) != 1)
 {
 	stop("Only 1 input file is expected, but '",
-		 posArgs, "' received")
+		 posArgs, "' are received")
 }
 
 msg("Reading data")
@@ -217,15 +230,42 @@ g<-get_value(opt$gCol, type=as.character)
 low<-get_value(opt$minCol, type=as.double);
 high<-get_value(opt$maxCol, type=as.double);
 
+xVal<-x[[1]];
+yVal<-y[[1]];
+if(opt$keepXOrder)
+{
+	xVal<-factor(xVal,levels=unique(xVal))
+}
 if(is.null(g))
 {
-	p<-ggplot(data.frame(), aes(x[[1]],y[[1]]))
+	#p<-ggplot(data.frame(), aes(x[[1]],y[[1]]))
+	p<-ggplot(data.frame(), aes(xVal,yVal))
 }else # group exists
 {
-	p<-ggplot(data.frame(), aes(x[[1]],y[[1]],fill=g[[1]])) + scale_fill_discrete(names(g)[1])
+	p<-ggplot(data.frame(), aes(xVal,yVal,fill=g[[1]])) + scale_fill_discrete(names(g)[1])
 }
 
-# add the user provided paramters if available
+## set default theme parameters
+# add xlab, ylab, and title
+p<-p+xlab(names(x)[1])+ylab(names(y)[1])
+if(!is.null(opt$figTitle))
+{
+	p<-p+ggtitle(opt$figTitle)+theme(plot.title=element_text(hjust=0.5))
+}
+
+#p+geom_bar(position=position_dodge2(preserve="single"),stat="identity")+theme(panel.background=NULL, panel.grid.major.x=element_line(linetype="dotted",size=0.5,color="black"))+coord_flip()
+
+
+# set legend position
+p<-p + theme_bw()+theme(legend.position=opt$legendPos)
+# flip bars if requested
+if(opt$horiz)
+{
+	p<-p+coord_flip(expand=F)
+}
+
+# add the user provided paramters if available, which can override
+# previous settings.
 if(!is.null(opt$funcOpts))
 {
 	cmd<-paste("p + ",opt$funcOpts)
@@ -244,12 +284,6 @@ if(!is.null(low) && !is.null(high))
 	p<-geom_errorbar(ylimits, position=position_dodge2(preserve="single",padding=0.7))
 }
 
-# add xlab, ylab, and title
-p<-p+xlab(names(x)[1])+ylab(names(y)[1])
-if(!is.null(opt$figTitle))
-{
-	p<-p+ggtitle(opt$figTitle)+theme(plot.title=element_text(hjust=0.5))
-}
 
 # display the plot
 p
