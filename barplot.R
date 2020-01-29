@@ -4,8 +4,7 @@
 load_pkg<-function(pkg)
 {
    if(!require(pkg,character.only=T,warn.conflicts=F)) {
-      install.packages(pkg, dependencies=T,repos="https://cloud.r-proj
-ect.org");
+      install.packages(pkg, dependencies=T,repos="https://cloud.r-project.org");
       suppressMessages(library(pkg,character.only=T));
    }
 }
