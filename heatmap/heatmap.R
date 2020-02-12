@@ -32,6 +32,15 @@ read_data<-function(f,columns=1,sep="\t",commChar="#")
 	return(d)
 }
 
+# compute distance as 1-R, where R is correlation coefficient.
+# the function need compute distance among rows according to
+# heatmap.2's requirement.
+cor_dist<-function(mat)
+{
+	rVals<-cor(t(mat),method=corMethod)
+	return(as.dist(1-rVals))
+}
+
 # get the filename extension
 get_ext<-function(f)
 {
@@ -103,6 +112,9 @@ Example uses:
 # provide parameters to the R function
 %prog -o test.pdf --rfunc-opts \"key=F,main='test_fun',margins=c(3,3)\" test.csv
 
+# use 1-correlation as distance
+%prog -o test1.pdf --row-lab=none --column-lab=sample_names.tsv --cor-dist test.csv
+
 Author: Zhenguo Zhang
 Contact: zhangz.sci@gmail.com
 ";
@@ -152,6 +164,12 @@ option_list<-list(
 	make_option(c("--key-x-lab"),action="store",default="value",
 				dest="keyXlab",type="character",
 				help="the x label for key. [%default]"),
+	make_option(c("--cor-dist"),action="store_true",default=FALSE,
+				dest="useCorDist",type="logical",
+				help="If provided, the distance among rows and columns is computed using 1-correlation. [%default]"),
+	make_option(c("--cor-method"),action="store",default="pearson",
+				dest="corMethod",type="character",
+				help="the correlation method as related to the option --cor-dist. Available values are: 'pearson','kendall', or 'spearman' [%default]"),
 	make_option(c("--rfunc-opts"),action="store",default=NULL,
 				dest="funcOpts",type="character",
 				help="Use this to specify options directly the used R function, and it overrides all other options"),
@@ -245,6 +263,10 @@ if(!is.null(rowLabels))
 withKey<-!opt$noKey
 keyXlab<-opt$keyXlab
 
+distFun<-ifelse(opt$useCorDist,"cor_dist","dist");
+#cat("distfun is", distFun); q("no")
+corMethod<-opt$corMethod;
+
 msg("Generating plot")
 ## determine the output device
 outFile<-opt$outFile
@@ -290,7 +312,8 @@ colorPal<-colorRampPalette(colorVect)(colorN)
 #print(vn); q("no");
 if(!is.null(opt$funcOpts))
 {
-	cmd<-paste("heatmap.2(dat,col=colorPal,",opt$funcOpts,")")
+	cmd<-paste("heatmap.2(dat,col=colorPal,distfun=",
+			   distFun,",", opt$funcOpts,")", sep="")
 	msg("running command", cmd)
 	eval(parse(text=cmd))
 }else
@@ -316,7 +339,8 @@ if(!is.null(opt$funcOpts))
 		cmd<-paste('heatmap.2(dat, col=colorPal, key=withKey, key.xlab=keyXlab,
 				  density.info="none", trace="none", srtCol=45,
 				  cex.lab=0.8, cex.axis=0.7, labRow=rowLabels, labCol=colLabels,
-				  margins=labMargins,key.title="DNA"', sideBarColors, sep=",")
+				  margins=labMargins,key.title="DNA",distfun=',distFun, 
+				  ",", sideBarColors, sep="")
 		cmd<-sub(",$","",cmd); # remove the last comma if applicable
 		cmd<-paste(cmd,")")
 		msg("running command", cmd)
