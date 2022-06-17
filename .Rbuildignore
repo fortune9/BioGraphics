@@ -1,0 +1,9 @@
+^graphics\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^LICENSE\.md$ 
+^pkgdown$
+^_pkgdown\.yml$
+^\.github$
+^temp$
+^data-raw$
