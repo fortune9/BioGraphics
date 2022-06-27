@@ -2,8 +2,11 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^LICENSE\.md$ 
+^docs$
+^helpers$
 ^pkgdown$
 ^_pkgdown\.yml$
 ^\.github$
 ^temp$
 ^data-raw$
+^Makefile$
