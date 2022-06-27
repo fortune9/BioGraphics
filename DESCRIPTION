@@ -1,0 +1,20 @@
+Package: BioGraphics
+Title: Convenient functions to make various plots
+Version: 0.0.1
+Authors@R: 
+    person("Zhenguo", "Zhang", , 
+      "zhangz.sci@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-9444-9604"))
+Description: The package is created to serve three purposes:
+  (1) making pretty plots with default parameters, (2) increasing
+  the flexibility in input data formats, (3) creating complex
+  figures such as matrices of plots.
+License: `use_gpl3_license()`
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+Imports: 
+    ggplot2,
+    ggVennDiagram,
+    RColorBrewer,
+    VennDiagram
