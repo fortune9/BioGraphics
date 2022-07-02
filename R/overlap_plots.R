@@ -1,8 +1,8 @@
-#' Plot of overlaps
+#' Plot of set overlaps
 #'
 #' @description
 #' This function creates plots to show the overlap
-#' of the input data.
+#' of the input sets.
 #'
 #' @details
 #' In default, it will generate
@@ -63,4 +63,11 @@ venn_diagram<-function(dat=NULL, color=NULL, ...) {
     ggplot2::scale_fill_gradient(low=color[1],high=color[2])
 }
 
+
+#' UpSet plot
+#'
+#' Create an [UpSet
+#' plot](https://r-graph-gallery.com/upset-plot.html).
+upset_plot<-function() {
+}
 

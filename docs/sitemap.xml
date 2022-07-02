@@ -1,30 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/index.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/reference/choose_palette.html</loc>
   </url>
   <url>
-    <loc>/reference/mat_to_set.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/reference/get_available_palettes.html</loc>
   </url>
   <url>
-    <loc>/reference/pick_colors.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/reference/get_palette_size.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_overlaps.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/venn_diagram.html</loc>
+    <loc>https://fortune9.github.io/BioGraphics/reference/mat_to_set.html</loc>
+  </url>
+  <url>
+    <loc>https://fortune9.github.io/BioGraphics/reference/melt_mat.html</loc>
+  </url>
+  <url>
+    <loc>https://fortune9.github.io/BioGraphics/reference/pick_colors.html</loc>
+  </url>
+  <url>
+    <loc>https://fortune9.github.io/BioGraphics/reference/plot_categorical_heatmap.html</loc>
+  </url>
+  <url>
+    <loc>https://fortune9.github.io/BioGraphics/reference/plot_heatmap.html</loc>
+  </url>
+  <url>
+    <loc>https://fortune9.github.io/BioGraphics/reference/plot_overlaps.html</loc>
+  </url>
+  <url>
+    <loc>https://fortune9.github.io/BioGraphics/reference/upset_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://fortune9.github.io/BioGraphics/reference/venn_diagram.html</loc>
   </url>
 </urlset>

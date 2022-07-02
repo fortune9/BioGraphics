@@ -7,7 +7,7 @@
 mat_to_set(mat, selected = NULL, presence = 1L, absence = 0L)
 }
 \arguments{
-\item{mat}{Input matrix, can be \code{\link[=data.frame]{data.frame()}} or \linkS4class{data.table}}
+\item{mat}{Input matrix, can also be \code{\link[=data.frame]{data.frame()}} or \linkS4class{data.table}}
 
 \item{selected}{A vector of numbers to select which columns are to
 be processed, default is \code{NULL}, i.e., all columns.}
@@ -15,6 +15,9 @@ be processed, default is \code{NULL}, i.e., all columns.}
 \item{presence}{The values in each column indicating the presence of
 a column in a row. Default is \code{1}, so a value of \code{1} in that
 column will include that element in final set.}
+}
+\value{
+A list, with each element being a set
 }
 \description{
 This function converts a matrix (or data.frame, data.table)

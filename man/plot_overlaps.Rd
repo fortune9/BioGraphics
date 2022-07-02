@@ -2,7 +2,7 @@
 % Please edit documentation in R/overlap_plots.R
 \name{plot_overlaps}
 \alias{plot_overlaps}
-\title{Plot of overlaps}
+\title{Plot of set overlaps}
 \usage{
 plot_overlaps(dat = NULL, counts = NULL, ...)
 }
@@ -22,7 +22,7 @@ A \code{plot} object
 }
 \description{
 This function creates plots to show the overlap
-of the input data.
+of the input sets.
 }
 \details{
 In default, it will generate

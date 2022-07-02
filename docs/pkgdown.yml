@@ -2,5 +2,8 @@ pandoc: 2.2.3.2
 pkgdown: 2.0.5
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-06-27T22:43Z
+last_built: 2022-07-02T08:40Z
+urls:
+  reference: https://fortune9.github.io/BioGraphics/reference
+  article: https://fortune9.github.io/BioGraphics/articles
 
